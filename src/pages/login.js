@@ -1,29 +1,107 @@
-{
-  /*
-          This example requires updating your template:
-  
-          ```
-          <html class="h-full bg-white">
-          <body class="h-full">
-          ```
-        */
-}
-
 import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/router";
 
-export default function Login() {
+ const Login = () => {
+
+  const router = useRouter();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
+  useEffect(() => {
+    console.log("Inside useEffect in login page.")
+    try {
+      if(localStorage.getItem('token')) {
+        router.push('/');
+      }
+    }
+    catch (error) {
+      console.log(error);
+    }
+    
+  }, []);
+
+  const handleChange = (e) => {
+    if (e.target.name == "email") {
+      setEmail(e.target.value);
+    } else if (e.target.name == "password") {
+      setPassword(e.target.value);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = { email, password };
+
+    let res = await fetch("http://localhost:3000/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    let response = await res.json();
+    console.log(response);
+
+    setEmail("");
+    setPassword("");
+    if(response.success) {
+      localStorage.setItem("token", response.token)
+      toast.success("Your are successfully logged in", {
+        position: "top-left",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setTimeout(() => {
+        router.push("/");
+      }, 1000);
+      
+    }
+    else {
+      toast.error(response.error, {
+        position: "top-left",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    
+  };
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+      <ToastContainer
+          position="top-left"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Sign in to your account
           </h2>
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form onSubmit={handleSubmit} className="space-y-6" method="POST">
             <div>
               <label
                 htmlFor="email"
@@ -33,6 +111,8 @@ export default function Login() {
               </label>
               <div className="mt-2">
                 <input
+                  onChange={handleChange}
+                  value={email}
                   id="email"
                   name="email"
                   type="email"
@@ -62,6 +142,8 @@ export default function Login() {
               </div>
               <div className="mt-2">
                 <input
+                  onChange={handleChange}
+                  value={password}
                   id="password"
                   name="password"
                   type="password"
@@ -83,7 +165,7 @@ export default function Login() {
           </form>
 
           <p className="mt-2 text-center text-sm text-gray-500">
-            Don't have account {""}
+            Don't have account 
             <Link
               href="/signup"
               className="font-semibold leading-6 text-pink-500 hover:text-pink-400"
@@ -96,3 +178,5 @@ export default function Login() {
     </>
   );
 }
+
+export default Login

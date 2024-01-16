@@ -1,20 +1,34 @@
 import '@/styles/globals.css'
+import React from 'react'
 import Navbar from '../../components/Navbar'
 import Footer from '../../components/Footer'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import NavbarPrev from '../../components/NavbarPrev'
+import LoadingBar from 'react-top-loading-bar'
 
 export default function App({ Component, pageProps }) {
 
   const router = useRouter();
 
+  const [progress, setProgress] = useState(0)
   const [cart, setCart] = useState({});
   const [subTotal, setSubTotal] = useState(0);
+  const [user, setUser] = useState({value: null});
+  const [key, setKey] = useState(0);
+
 
   useEffect(() => {
-    // console.log("Hi I am useEffect from _app.js");
+    // console.log("Hey I am useEffect");
+
+    router.events.on('routeChangeStart', () => {
+      setProgress(40);
+    });
+    router.events.on('routeChangeComplete', () => {
+      setProgress(100);
+    });
 
     try {
       if(localStorage.getItem("cart")) {
@@ -26,9 +40,13 @@ export default function App({ Component, pageProps }) {
       console.log(error);
       localStorage.clear();
     }
+    const token = localStorage.getItem('token');
+    if(token) {
+      setUser({value: token});
+      setKey(Math.random());
+    }
     
-    
-  }, [])
+  }, [router.query]);
 
   const saveCart = (myCart) => {
     localStorage.setItem("cart", JSON.stringify(myCart));
@@ -42,16 +60,16 @@ export default function App({ Component, pageProps }) {
   }
 
   const addToCart = (itemCode, qty, price, name, itemImg) => {
-    toast.success('Item added to cart', {
-      position: "top-left",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      });
+    // toast.success('Item added to cart', {
+    //   position: "top-left",
+    //   autoClose: 2000,
+    //   hideProgressBar: false,
+    //   closeOnClick: true,
+    //   pauseOnHover: true,
+    //   draggable: true,
+    //   progress: undefined,
+    //   theme: "light",
+    //   });
     let newCart = cart;
     if(itemCode in cart) {
       newCart[itemCode].qty = cart[itemCode].qty + qty;
@@ -95,9 +113,37 @@ export default function App({ Component, pageProps }) {
     saveCart(newCart);
   }
 
+  const logout = () => {
+    setTimeout(() => {
+    localStorage.removeItem('token');
+    setUser({value: null});
+    setKey(Math.random());
+    router.push("/")
+    }, 2000);
+    
+    // toast.success('Successfully Logout', {
+    //   position: "top-left",
+    //   autoClose: 2000,
+    //   hideProgressBar: false,
+    //   closeOnClick: true,
+    //   pauseOnHover: true,
+    //   draggable: true,
+    //   progress: undefined,
+    //   theme: "light",
+    //   });
+  }
+
   return (
     <>
-    <Navbar key={subTotal} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} />
+    <LoadingBar
+        color='#EC4899'
+        height={3}
+        progress={progress}
+        waitingTime={400}
+        onLoaderFinished={() => setProgress(0)}
+      />
+    <Navbar user={user} key={key} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} logout={logout} />
+    {/* <NavbarPrev /> */}
     <Component cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} buyNow={buyNow} {...pageProps} />
     <Footer cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} />
   </>
