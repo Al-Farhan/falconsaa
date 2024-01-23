@@ -7,8 +7,8 @@ import { useRouter } from "next/router";
  const Login = () => {
 
   const router = useRouter();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     console.log("Inside useEffect in login page.")
@@ -21,7 +21,7 @@ import { useRouter } from "next/router";
       console.log(error);
     }
     
-  }, []);
+  }, [router.query]);
 
   const handleChange = (e) => {
     if (e.target.name == "email") {
@@ -35,7 +35,7 @@ import { useRouter } from "next/router";
     e.preventDefault();
     const data = { email, password };
 
-    let res = await fetch("http://localhost:3000/api/login", {
+    let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -80,7 +80,6 @@ import { useRouter } from "next/router";
     
   };
   return (
-    <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <ToastContainer
           position="top-left"
@@ -101,7 +100,7 @@ import { useRouter } from "next/router";
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form onSubmit={handleSubmit} className="space-y-6" method="POST">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label
                 htmlFor="email"
@@ -175,7 +174,7 @@ import { useRouter } from "next/router";
           </p>
         </div>
       </div>
-    </>
+
   );
 }
 

@@ -20,10 +20,10 @@ const Slug = ({ addToCart, product, buyNow }) => {
   const notify = () => toast("Wow so easy!");
 
   const checkServicibility = async () => {
-    let pincodes = await fetch("http://localhost:3000/api/pincode");
+    let pincodes = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
     let pinsJson = await pincodes.json();
 
-    if (pinsJson.includes(parseInt(pins))) {
+    if (Object.keys(pinsJson).includes(pins)) {
       setService(true);
     } else {
       setService(false);

@@ -137,7 +137,8 @@ export default function Navbar({
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      {!user.value ? (
+                     
+                        {(!user.value) && 
                         <Menu.Item>
                           {({ active }) => (
                             <Link
@@ -151,7 +152,9 @@ export default function Navbar({
                             </Link>
                           )}
                         </Menu.Item>
-                      ) : (
+                          }
+
+                        {user.value && 
                         <>
                           <Menu.Item>
                             {({ active }) => (
@@ -163,6 +166,7 @@ export default function Navbar({
                                 )}
                               >
                                 Profile
+                                
                               </Link>
                             )}
                           </Menu.Item>
@@ -193,7 +197,7 @@ export default function Navbar({
                             )}
                           </Menu.Item>
                         </>
-                      )}
+}
                     </Menu.Items>
                   </Transition>
                 </Menu>

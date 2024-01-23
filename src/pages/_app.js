@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import NavbarPrev from '../../components/NavbarPrev'
 import LoadingBar from 'react-top-loading-bar'
 
 export default function App({ Component, pageProps }) {
@@ -17,7 +16,7 @@ export default function App({ Component, pageProps }) {
   const [cart, setCart] = useState({});
   const [subTotal, setSubTotal] = useState(0);
   const [user, setUser] = useState({value: null});
-  const [key, setKey] = useState(0);
+  const [key, setKey] = useState();
 
 
   useEffect(() => {
@@ -43,8 +42,8 @@ export default function App({ Component, pageProps }) {
     const token = localStorage.getItem('token');
     if(token) {
       setUser({value: token});
-      setKey(Math.random());
     }
+    setKey(Math.random());
     
   }, [router.query]);
 
@@ -84,8 +83,8 @@ export default function App({ Component, pageProps }) {
   }
 
   const buyNow = (itemCode, qty, price, name, itemImg) => {
-    
-    let newCart = {itemCode: {qty: 1, price, name, itemImg}};
+    let newCart = {}
+    newCart[itemCode] = {qty: 1, price, name, itemImg};
     
     // console.log("new cart", newCart)
     setCart(newCart);
@@ -118,7 +117,7 @@ export default function App({ Component, pageProps }) {
     localStorage.removeItem('token');
     setUser({value: null});
     setKey(Math.random());
-    router.push("/")
+    router.push("/");
     }, 2000);
     
     // toast.success('Successfully Logout', {
@@ -142,7 +141,7 @@ export default function App({ Component, pageProps }) {
         waitingTime={400}
         onLoaderFinished={() => setProgress(0)}
       />
-    <Navbar user={user} key={key} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} logout={logout} />
+    {key && <Navbar user={user} key={key} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} logout={logout} />}
     {/* <NavbarPrev /> */}
     <Component cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} buyNow={buyNow} {...pageProps} />
     <Footer cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} />

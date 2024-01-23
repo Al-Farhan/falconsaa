@@ -10,13 +10,13 @@ const handler = async (req, res) => {
     let user = await User.findOne({ "email": req.body.email });
     const bytes = CryptoJS.AES.decrypt(
       user.password,
-      "secret123d"
+      process.env.AES_SECRET
     );
     let decryptedData = (bytes.toString(CryptoJS.enc.Utf8));
 
     if (user) {
       if (req.body.email == user.email && req.body.password == decryptedData) {
-        let token = jwt.sign({ email: user.email, name: user.name }, 'jwtsecret', {expiresIn: "2d"});
+        let token = jwt.sign({ email: user.email, name: user.name }, process.env.JWT_SECRET, {expiresIn: "2d"});
         res.status(200).json({success: true, token});
       } else {
         res.status(200).json({ success: false, error: "Invalid credentials" });
