@@ -39,9 +39,9 @@ export default function App({ Component, pageProps }) {
       console.log(error);
       localStorage.clear();
     }
-    const token = localStorage.getItem('token');
-    if(token) {
-      setUser({value: token});
+    const myuser = JSON.parse(localStorage.getItem('myuser'));
+    if(myuser) {
+      setUser({value: myuser.token, email: myuser.email});
     }
     setKey(Math.random());
     
@@ -59,16 +59,16 @@ export default function App({ Component, pageProps }) {
   }
 
   const addToCart = (itemCode, qty, price, name, itemImg) => {
-    // toast.success('Item added to cart', {
-    //   position: "top-left",
-    //   autoClose: 2000,
-    //   hideProgressBar: false,
-    //   closeOnClick: true,
-    //   pauseOnHover: true,
-    //   draggable: true,
-    //   progress: undefined,
-    //   theme: "light",
-    //   });
+    toast.success('Item added to cart', {
+      position: "top-left",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      });
     let newCart = cart;
     if(itemCode in cart) {
       newCart[itemCode].qty = cart[itemCode].qty + qty;
@@ -114,7 +114,7 @@ export default function App({ Component, pageProps }) {
 
   const logout = () => {
     setTimeout(() => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('myuser');
     setUser({value: null});
     setKey(Math.random());
     router.push("/");
@@ -141,7 +141,7 @@ export default function App({ Component, pageProps }) {
         waitingTime={400}
         onLoaderFinished={() => setProgress(0)}
       />
-    {key && <Navbar user={user} key={key} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} logout={logout} />}
+    {key && <Navbar user={user} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} logout={logout} />}
     {/* <NavbarPrev /> */}
     <Component cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} buyNow={buyNow} {...pageProps} />
     <Footer cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} />

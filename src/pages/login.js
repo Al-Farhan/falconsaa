@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
   useEffect(() => {
     console.log("Inside useEffect in login page.")
     try {
-      if(localStorage.getItem('token')) {
+      if(localStorage.getItem('mytoken')) {
         router.push('/');
       }
     }
@@ -49,7 +49,7 @@ import { useRouter } from "next/router";
     setEmail("");
     setPassword("");
     if(response.success) {
-      localStorage.setItem("token", response.token)
+      localStorage.setItem("myuser", JSON.stringify({token: response.token, email: response.email}))
       toast.success("Your are successfully logged in", {
         position: "top-left",
         autoClose: 3000,

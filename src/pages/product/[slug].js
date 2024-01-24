@@ -1,13 +1,14 @@
 import { ServerIcon } from "@heroicons/react/24/outline";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Router, { useRouter } from "next/router";
 import Product from "../../../models/Product";
 import mongoose from "mongoose";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Error from "next/error";
 
-const Slug = ({ addToCart, product, buyNow }) => {
+const Slug = ({ addToCart, product, buyNow, error }) => {
   // console.log(product);
 
   let router = useRouter();
@@ -16,8 +17,6 @@ const Slug = ({ addToCart, product, buyNow }) => {
 
   const [pins, setPins] = useState();
   const [service, setService] = useState();
-
-  const notify = () => toast("Wow so easy!");
 
   const checkServicibility = async () => {
     let pincodes = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
@@ -33,6 +32,10 @@ const Slug = ({ addToCart, product, buyNow }) => {
   const onChangePin = (e) => {
     setPins(e.target.value);
   };
+
+  if(error == 404) {
+    return <Error statusCode={404} />
+  }
 
   return (
     
@@ -190,12 +193,20 @@ const Slug = ({ addToCart, product, buyNow }) => {
             </div>
 
             <div className="flex mb-3 space-x-2">
+              {product.availableQty<=0 && <span className="title-font font-medium text-2xl text-pink-500">
+                Out of stock!
+              </span>}
+
+              {!product.availableQty<=0 &&
+              <>
               <span className="title-font font-medium text-2xl text-gray-400 line-through">
                 ₹{product.mrp}
               </span>
               <span className="title-font font-medium text-2xl text-gray-900">
                 ₹{product.price}
               </span>
+              </>
+              }
             </div>
             <div className="flex flex-col sm:flex-row">
               <button
@@ -208,7 +219,8 @@ const Slug = ({ addToCart, product, buyNow }) => {
                     product.img
                   );
                 }}
-                className="text-white bg-pink-500 border-0 sm:mr-3 mb-2 sm:mb-0 py-2 px-6 focus:outline-none hover:bg-pink-600 rounded"
+                disabled={product.availableQty<=0}
+                className="text-white disabled:bg-pink-300 bg-pink-500 border-0 sm:mr-3 mb-2 sm:mb-0 py-2 px-6 focus:outline-none hover:bg-pink-600 rounded"
               >
                 Add to Cart
               </button>
@@ -234,7 +246,8 @@ const Slug = ({ addToCart, product, buyNow }) => {
                     product.img
                   );
                 }}
-                className="text-white bg-pink-500 border-0 sm:mr-3 mb-3 sm:mb-0 py-2 px-6 focus:outline-none hover:bg-pink-600 rounded"
+                disabled={product.availableQty<=0}
+                className="text-white disabled:bg-pink-300 bg-pink-500 border-0 sm:mr-3 mb-3 sm:mb-0 py-2 px-6 focus:outline-none hover:bg-pink-600 rounded"
               >
                 Buy now
               </button>
@@ -284,13 +297,19 @@ const Slug = ({ addToCart, product, buyNow }) => {
 };
 
 export async function getServerSideProps(context) {
+  let error = null;
   if (!mongoose.connections[0].readyState) {
     await mongoose.connect(process.env.MONGO_URI);
   }
-  let product = await Product.findOne({ _id: context.query.slug });
+  let product = await Product.findOne({ slug: context.query.slug });
+  if(product == null) {
+    return {
+      props: {error: 404}
+    }
+  }
 
   return {
-    props: { product: JSON.parse(JSON.stringify(product)) },
+    props: {error: error, product: JSON.parse(JSON.stringify(product)) },
   };
 }
 

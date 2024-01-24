@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { FaShoppingCart } from "react-icons/fa";
@@ -6,6 +6,7 @@ import { MdAccountCircle } from "react-icons/md";
 import Link from "next/link";
 import Cart from "./Cart";
 import { useRef, useState } from "react";
+import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -31,10 +32,21 @@ export default function Navbar({
 }) {
   // console.log(cart, addToCart, removeFromCart, clearCart, subTotal);
 
+  const [sidebar, setSidebar] = useState(false);
+
   const [openCart, setOpenCart] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    Object.keys(cart).length !== 0 && setSidebar(true);
+    let exempted = ["/checkout", "/order", "/orders"];
+    if (exempted.includes(router.pathname)) {
+      setOpenCart(false);
+    }
+  }, [openCart]);
 
   const toggleCart = () => {
-    console.log("Clicked on cart");
+    setSidebar(!sidebar);
     setOpenCart((prev) => {
       if (prev) return !prev;
       else return !prev;
@@ -72,6 +84,50 @@ export default function Navbar({
                     />
                   </Link>
                 </div>
+
+                      <div className="mx-10 hidden sm:block w-96 ">
+                <form>
+                  <label
+                    for="default-search"
+                    className="mb-2 text-sm font-medium text-pink-500 sr-only dark:text-white"
+                  >
+                    Search
+                  </label>
+                  <div className="relative">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                      <svg
+                        class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                        />
+                      </svg>
+                    </div>
+                    <input
+                      type="search"
+                      id="default-search"
+                      class="block w-full h-12 mt-1 p-4 ps-10 text-sm text-gray-700 border border-pink-500 rounded-lg bg-white focus:ring-pink-500 focus:border-pink-500  dark:placeholder-gray-400 "
+                      placeholder="Search from our 1000+ books"
+                      required
+                    />
+                    <button
+                      type="submit"
+                      class="text-white absolute end-2.5 bottom-1.5 bg-pink-500 hover:bg-pink-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2  dark:focus:ring-blue-800"
+                    >
+                      Search
+                    </button>
+                  </div>
+                </form>
+                </div>
+
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4 py-2">
                     {navigation.map((item) => (
@@ -137,8 +193,7 @@ export default function Navbar({
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                     
-                        {(!user.value) && 
+                      {!user.value && (
                         <Menu.Item>
                           {({ active }) => (
                             <Link
@@ -152,10 +207,23 @@ export default function Navbar({
                             </Link>
                           )}
                         </Menu.Item>
-                          }
+                      )}
 
-                        {user.value && 
+                      {user.value && (
                         <>
+                          <Menu.Item>
+                            {({ active }) => (
+                              <Link
+                                href="/orders"
+                                className={classNames(
+                                  active ? "bg-gray-100" : "",
+                                  "block px-4 py-2 text-sm text-gray-700"
+                                )}
+                              >
+                                Orders
+                              </Link>
+                            )}
+                          </Menu.Item>
                           <Menu.Item>
                             {({ active }) => (
                               <Link
@@ -166,7 +234,6 @@ export default function Navbar({
                                 )}
                               >
                                 Profile
-                                
                               </Link>
                             )}
                           </Menu.Item>
@@ -197,7 +264,7 @@ export default function Navbar({
                             )}
                           </Menu.Item>
                         </>
-}
+                      )}
                     </Menu.Items>
                   </Transition>
                 </Menu>

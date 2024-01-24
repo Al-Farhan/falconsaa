@@ -19,7 +19,7 @@ export default function Cart({
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={setOpen}>
+      <Dialog as="div" className="relative z-10 sticky" onClose={setOpen}>
         <Transition.Child
           as={Fragment}
           enter="ease-in-out duration-500"
@@ -164,15 +164,16 @@ export default function Cart({
                       </p>
                       <div className="mt-6">
                         <Link href="/checkout">
-                        <button className="flex items-center justify-center rounded-md border border-transparent bg-pink-500 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-pink-400">
+                        <button disabled={Object.keys(cart).length === 0} className="disabled:bg-pink-300 flex items-center justify-center rounded-md border border-transparent bg-pink-500 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-pink-400">
                         <IoBagCheck  className="mr-2 text-white" /> Checkout
                         </button>
                         </Link>
                       </div>
                       <div className="mt-6">
                         <button
+                          disabled={Object.keys(cart).length === 0}
                           onClick={clearCart}
-                          className="flex items-center justify-center rounded-md border border-transparent w-20 bg-pink-500 py-2 text-sm font-medium text-white shadow-sm hover:bg-pink-400"
+                          className="disabled:bg-pink-300 flex items-center justify-center rounded-md border border-transparent w-20 bg-pink-500 py-2 text-sm font-medium text-white shadow-sm hover:bg-pink-400"
                         >
                           Clear Cart
                         </button>

@@ -5,6 +5,7 @@ const OrderSchema = new Schema({
     email: {
         type: String,
         required: true,
+        unique: true,
     },
     orderId: {
         type: String,
@@ -29,6 +30,11 @@ const OrderSchema = new Schema({
     status: {
         type: String,
         default: "Initiated",
+        required: true,
+    },
+    deliveryStatus: {
+        type: String,
+        default: "unshipped",
         required: true,
     }
 }, {timestamps: true});

@@ -5,7 +5,7 @@ const Myaccount = () => {
   let router = useRouter();
   useEffect(() => {
     try {
-      if (!localStorage.getItem("token")) {
+      if (!localStorage.getItem("myuser")) {
         router.push("/");
       }
     } catch (error) {

@@ -1,14 +1,28 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Order from '../../models/Order';
 import mongoose from "mongoose";
 import Link from 'next/link';
 
-const MyOrder = ({order}) => {
+const MyOrder = ({order, clearCart}) => {
 
-  // console.log(order)
   const products = order.products;
-  console.log(products);
+  const router = useRouter();
+  const [date, setDate] = useState();
+  const [time, setTime] = useState();
+
+  useEffect(() => {
+    if(router.query.clearCart == 1) {
+      clearCart();
+    }
+
+    const date = new Date(order.createdAt);
+    setDate(date);
+
+    const time = new Date(order.createdAt);
+    setTime(time)
+  }, [])
+  
 
   return (
     <section className="text-gray-600 body-font overflow-hidden">
@@ -19,6 +33,8 @@ const MyOrder = ({order}) => {
         <h1 className="text-gray-900 text-3xl title-font font-medium mb-4">Order Id: #{order.orderId}</h1>
         
         <p className="leading-relaxed mb-4">Your order has been successfully placed. Your payment status is {order.status}</p>
+        <p className="leading-relaxed mb-4">Order created on: {date && date.toLocaleDateString("en-IN", {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})}</p>
+        <p className="leading-relaxed mb-4">@: {time && time.toLocaleTimeString()}</p>
 
         <div className="flex mb-4 py-2">
           <a className="flex-grow  py-2 text-lg text-center">Item Description</a>
