@@ -3,6 +3,7 @@ import Order from "../../models/Order";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Head from "next/head";
 
 export default function Orders() {
   const router = useRouter();
@@ -19,10 +20,8 @@ export default function Orders() {
         body: JSON.stringify({ token: JSON.parse(localStorage.getItem("myuser")).token }),
       });
 
-      let res = await a.json();
-      console.log(res);
+      let res = await a.json()
       setOrders(res.orders);
-      console.log("Orders", orders);
     };
 
     if (!localStorage.getItem("myuser")) {
@@ -34,6 +33,13 @@ export default function Orders() {
 
   return (
     <>
+    <Head>
+        <title>Orders Falconsaa. Fulfill the dream of your insides falcon.</title>
+        <meta
+          name="description"
+          content="Falconsaa - An ecommerce platform that fulfills the need of books to all the needfull aspirants."
+        />
+      </Head>
       <h1 className="text-2xl font-bold mx-10 sm:mx-20 mt-12">My Orders</h1>
 
       <div className="relative overflow-x-auto my-6 shadow-lg bg-gray-100 sm:rounded-lg sm:mx-20 min-h-screen">

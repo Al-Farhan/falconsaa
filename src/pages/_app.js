@@ -20,7 +20,6 @@ export default function App({ Component, pageProps }) {
 
 
   useEffect(() => {
-    // console.log("Hey I am useEffect");
 
     router.events.on('routeChangeStart', () => {
       setProgress(40);
@@ -52,7 +51,6 @@ export default function App({ Component, pageProps }) {
     let subt=0;
     let keys = Object.keys(myCart);
     for(let i = 0; i<keys.length; i++) {
-      console.log("keys",keys)
       subt += myCart[keys[i]].price * myCart[keys[i]].qty;
     }
     setSubTotal(subt);
@@ -77,7 +75,6 @@ export default function App({ Component, pageProps }) {
       newCart[itemCode] = {qty: 1, price, name, itemImg}
     }
 
-    console.log("new cart", newCart)
     setCart(newCart);
     saveCart(newCart);
   }
@@ -86,7 +83,6 @@ export default function App({ Component, pageProps }) {
     let newCart = {}
     newCart[itemCode] = {qty: 1, price, name, itemImg};
     
-    // console.log("new cart", newCart)
     setCart(newCart);
     saveCart(newCart);
     router.push('/checkout');

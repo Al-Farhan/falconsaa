@@ -3,12 +3,21 @@ import React from "react";
 import Product from "../../models/Product";
 import connectDb from "../../middleware/mongoose";
 import mongoose from "mongoose";
+import Head from "next/head";
 
 const Medical = ({products}) => {
   // console.log(products);
 
 
   return (
+    <>
+    <Head>
+        <title>Buy medical books from Falconsaa. Fulfill the dream of your insides falcon.</title>
+        <meta
+          name="description"
+          content="Falconsaa - An ecommerce platform that fulfills the need of books to all the needfull aspirants."
+        />
+      </Head>
     <div className="bg-white mt-2 min-h-screen">
       {(products.length == 0) ? <div className="text-lg text-center text-gray-500 h-44">Sorry product will be available soon.</div> :
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
@@ -51,6 +60,7 @@ const Medical = ({products}) => {
       </div>
 }
     </div>
+    </>
   );
 };
 

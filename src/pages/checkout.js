@@ -28,15 +28,19 @@ const Checkout = ({
   const [disabled, setDisabled] = useState(true);
   const [user, setUser] = useState({value: null})
 
+  const [oidNumberCount, setOidNumberCount] = useState(100);
+
   useEffect(() => {
 
     const user = JSON.parse(localStorage.getItem('myuser'));
-    if(subTotal==0) {
-      router.push("/");
-    }
-    if(user.token) {
+    
+    if(user && user.token) {
       setUser(user);
       setEmail(user.email);
+    }
+
+    if(subTotal==0) {
+      router.push("/");
     }
   }, [])
 
@@ -83,7 +87,15 @@ const Checkout = ({
   };
 
   const initiatePayment = async () => {
-    let oid = Math.floor(Math.random() * Date.now());
+
+    let oidPrefix = "101";
+    let oidMiddle = Math.floor((Math.random() * 1000 ) * Date.now());
+    // let oidMiddle = oidNumberCount;
+    let oidSuffix = "404";
+    // let oid = Math.floor(Math.random() * Date.now());
+
+    let oid = (oidPrefix + "-" + oidMiddle + "-" + oidSuffix);
+
     // Get a transaction token
     const data = {
       cart,
@@ -109,7 +121,7 @@ const Checkout = ({
 
     if (txnRes.success) {
       let txnToken = txnRes.txnToken;
-
+      setOidNumberCount(oidNumberCount + 1);
       var config = {
         root: "",
         flow: "DEFAULT",
@@ -138,11 +150,14 @@ const Checkout = ({
         });
     } else {
       console.log(txnRes.error);
-      clearCart();
+      if(txnRes.cartClear) {
+        clearCart();
+      }
+      
 
       toast.error(txnRes.error, {
         position: "top-left",
-        autoClose: 5000,
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -169,6 +184,8 @@ const Checkout = ({
           name="viewport"
           content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0"
         />
+        <title>Checkout - Falconsaa</title>
+        <meta name="description" content="Falconsaa - An ecommerce platform that fulfills the need of books to all the needfull aspirants." />
       </Head>
       <Script
         type="application/javascript"

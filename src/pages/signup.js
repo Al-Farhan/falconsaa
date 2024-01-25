@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Head from "next/head";
 
 export default function Signup() {
   const [name, setName] = useState('');
@@ -49,6 +50,16 @@ export default function Signup() {
 
   return (
     <>
+    <Head>
+        <title>
+          Signup Falconsaa. Fulfill the dream of your insides
+          falcon.
+        </title>
+        <meta
+          name="description"
+          content="Falconsaa - An ecommerce platform that fulfills the need of books to all the needfull aspirants."
+        />
+      </Head>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <ToastContainer
           position="top-left"

@@ -80,6 +80,14 @@ import { useRouter } from "next/router";
     
   };
   return (
+    <>
+    <Head>
+        <title>Login - Falconsaa.</title>
+        <meta
+          name="description"
+          content="Falconsaa - An ecommerce platform that fulfills the need of books to all the needfull aspirants."
+        />
+      </Head>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <ToastContainer
           position="top-left"
@@ -174,7 +182,7 @@ import { useRouter } from "next/router";
           </p>
         </div>
       </div>
-
+      </>
   );
 }
 

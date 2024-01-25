@@ -7,9 +7,9 @@ import mongoose from "mongoose";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Error from "next/error";
+import Head from "next/head";
 
 const Slug = ({ addToCart, product, buyNow, error }) => {
-  // console.log(product);
 
   let router = useRouter();
 
@@ -38,7 +38,17 @@ const Slug = ({ addToCart, product, buyNow, error }) => {
   }
 
   return (
-    
+    <>
+    <Head>
+        <title>
+          Buy {product.title}. Fulfill the dream of your insides
+          falcon.
+        </title>
+        <meta
+          name="description"
+          content={`${product.desc} Falconsaa - An ecommerce platform that fulfills the need of books to all the needfull aspirants.`}
+        />
+      </Head>
     <section className="text-gray-600 body-font overflow-hidden">
       <div className="container px-5 py-10 mx-auto">
         <div className="sm:ml-32 mx-auto flex flex-wrap">
@@ -293,6 +303,7 @@ const Slug = ({ addToCart, product, buyNow, error }) => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 

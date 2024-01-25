@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import Order from '../../models/Order';
 import mongoose from "mongoose";
 import Link from 'next/link';
+import Head from 'next/head';
 
 const MyOrder = ({order, clearCart}) => {
 
@@ -25,6 +26,14 @@ const MyOrder = ({order, clearCart}) => {
   
 
   return (
+    <>
+    <Head>
+        <title>Order Falconsaa. Fulfill the dream of your insides falcon.</title>
+        <meta
+          name="description"
+          content="Falconsaa - An ecommerce platform that fulfills the need of books to all the needfull aspirants."
+        />
+      </Head>
     <section className="text-gray-600 body-font overflow-hidden">
   <div className="container px-5 py-24 mx-auto">
     <div className="lg:w-4/5 mx-auto flex flex-wrap">
@@ -48,7 +57,7 @@ const MyOrder = ({order, clearCart}) => {
           <div key={item} className="flex border-t border-gray-200 py-2">
           <span className="text-gray-500 w-36">{products[item].name}</span>  
           <span className="m-auto text-gray-900">{products[item].qty}</span>
-          <span className="m-auto text-gray-900">₹{products[item].price}</span>
+          <span className="m-auto text-gray-900">{products[item].price} X {products[item].qty} = ₹{products[item].price * products[item].qty}</span>
         </div>
         ))}
 
@@ -112,6 +121,7 @@ const MyOrder = ({order, clearCart}) => {
         </table>
       </div>
 </section>
+</>
   )
 }
 

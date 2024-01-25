@@ -88,15 +88,15 @@ export default function Navbar({
                       <div className="mx-10 hidden sm:block w-96 ">
                 <form>
                   <label
-                    for="default-search"
+                    htmlFor="default-search"
                     className="mb-2 text-sm font-medium text-pink-500 sr-only dark:text-white"
                   >
                     Search
                   </label>
                   <div className="relative">
-                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                       <svg
-                        class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                        className="w-4 h-4 text-gray-500 dark:text-gray-400"
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -114,13 +114,13 @@ export default function Navbar({
                     <input
                       type="search"
                       id="default-search"
-                      class="block w-full h-12 mt-1 p-4 ps-10 text-sm text-gray-700 border border-pink-500 rounded-lg bg-white focus:ring-pink-500 focus:border-pink-500  dark:placeholder-gray-400 "
+                      className="block w-full h-12 mt-1 p-4 ps-10 text-sm text-gray-700 border border-pink-500 rounded-lg bg-white focus:ring-pink-500 focus:border-pink-500  dark:placeholder-gray-400 "
                       placeholder="Search from our 1000+ books"
                       required
                     />
                     <button
                       type="submit"
-                      class="text-white absolute end-2.5 bottom-1.5 bg-pink-500 hover:bg-pink-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2  dark:focus:ring-blue-800"
+                      className="text-white absolute end-2.5 bottom-1.5 bg-pink-500 hover:bg-pink-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2  dark:focus:ring-blue-800"
                     >
                       Search
                     </button>
@@ -227,13 +227,13 @@ export default function Navbar({
                           <Menu.Item>
                             {({ active }) => (
                               <Link
-                                href="/profile"
+                                href="/myaccount"
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
                                   "block px-4 py-2 text-sm text-gray-700"
                                 )}
                               >
-                                Profile
+                                My account
                               </Link>
                             )}
                           </Menu.Item>

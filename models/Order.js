@@ -10,6 +10,7 @@ const OrderSchema = new Schema({
     orderId: {
         type: String,
         required: true,
+        unique: true,
     },
     paymentInfo: {
         type: String,
@@ -22,6 +23,10 @@ const OrderSchema = new Schema({
     address: {
         type: String,
         required: true,
+    },
+    transactionId: {
+        type: String,
+        default: "",
     },
     amount: {
         type: Number,
