@@ -47,7 +47,7 @@ const handler = async (req, res) => {
   // Redirect to the order confirmation page
   res.redirect(`/order?clearCart=1&id=` + order._id, 200);
 
-  res.status(200).json({ body: req.body });
+  // res.status(200).json({ body: req.body });
 };
 
 export default connectDb(handler);
