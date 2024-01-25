@@ -3,14 +3,14 @@ const PaytmChecksum = require("paytmchecksum");
 import connectDb from "../../../middleware/mongoose";
 import Order from "../../../models/Order";
 import Product from "../../../models/Product";
-import pincodes from '../../../pincodes.json'
+import pincodes from '../../../pincodes.json';
 
 const handler = async (req, res) => {
   if (req.method == "POST") {
 
     // Check if the pincode is serviceable
     if(!Object.keys(pincodes).includes(req.body.pincode)) {
-      res.status(200).json({success: false, "error": "The pincode you have entered is not serviceable", cartClear: false})
+      res.status(200).json({success: false, "error": "The pincode you have entered is not serviceable", cartClear: false});
       return
     }
 

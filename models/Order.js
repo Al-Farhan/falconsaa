@@ -5,7 +5,6 @@ const OrderSchema = new Schema({
     email: {
         type: String,
         required: true,
-        unique: true,
     },
     orderId: {
         type: String,
