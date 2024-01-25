@@ -173,7 +173,7 @@ import Head from "next/head";
           </form>
 
           <p className="mt-2 text-center text-sm text-gray-500">
-            Don't have account 
+            Don&apos;t have account 
             <Link
               href="/signup"
               className="font-semibold leading-6 text-pink-500 hover:text-pink-400"
