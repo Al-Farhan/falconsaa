@@ -1,5 +1,10 @@
 import mongoose from 'mongoose';
 
+// const options = {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   };
+
 const connectDb = handler => async (req, res) => {
     if(mongoose.connections[0].readyState) {
         return handler(req, res);

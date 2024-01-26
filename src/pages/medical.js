@@ -6,8 +6,6 @@ import mongoose from "mongoose";
 import Head from "next/head";
 
 const Medical = ({products}) => {
-  // console.log(products);
-
 
   return (
     <>
