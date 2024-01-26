@@ -11,7 +11,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const navigation = [
-  { name: "Medical", href: "/medical", current: true },
+  { name: "Medical", href: "/medical", current: false },
   { name: "Dental", href: "/dental", current: false },
   { name: "Pharmacy", href: "/pharmacy", current: false },
   { name: "Nursing", href: "/nursing", current: false },
@@ -275,20 +275,25 @@ export default function Navbar({
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 px-2 pb-3 pt-2">
               {navigation.map((item) => (
-                <Disclosure.Button
+                <Link href={item.href}
                   key={item.name}
-                  as="a"
-                  href={item.href}
-                  className={classNames(
-                    item.current
-                      ? "bg-pink-500 text-white"
-                      : "text-black hover:bg-pink-500 hover:text-white",
-                    "block rounded-md px-3 py-2 text-base font-medium hover:bg-pink-500 hover:text-white"
-                  )}
-                  aria-current={item.current ? "page" : undefined}
-                >
+                  
+                  
+                  // {/* className={classNames(
+                  //   // item.current
+                  //     ? "text-black"
+                  //     : "text-black hover:bg-pink-500 hover:text-white",
+                  //   "block rounded-md px-3 py-2 text-base font-medium hover:bg-pink-500 hover:text-white"
+                  // )}
+                  // aria-current={item.current ? "page" : undefined} */}
+
+                  className="text-black hover:bg-pink-500 hover:text-white
+                    block rounded-md px-3 py-2 text-base font-medium"
+                    >
+                
                   {item.name}
-                </Disclosure.Button>
+                  </Link>
+
               ))}
             </div>
           </Disclosure.Panel>
