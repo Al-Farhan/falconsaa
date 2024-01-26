@@ -33,7 +33,6 @@ export default function Navbar({
   logout,
 }) {
   const { query, updateSearchQuery, setQueryProducts, queryProducts } = useSearch();
-  console.log("Query", query)
 
   const [sidebar, setSidebar] = useState(false);
 
@@ -45,9 +44,7 @@ export default function Navbar({
       `${process.env.NEXT_PUBLIC_HOST}/api/search?query=${query}`
     );
     const data = await response.json();
-    console.log("Data", data);
     setQueryProducts(data);
-    console.log("Query products",queryProducts);
     router.push(`${process.env.NEXT_PUBLIC_HOST}/search?query=${query}`);
   };
 

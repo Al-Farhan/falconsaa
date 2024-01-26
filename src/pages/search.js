@@ -6,7 +6,6 @@ import { useSearch } from '../../context/Context';
 const Search = () => {
 
     const {queryProducts} = useSearch();
-    console.log(queryProducts);
 
     return (
         <>
