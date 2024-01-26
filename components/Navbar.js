@@ -51,6 +51,10 @@ export default function Navbar({
     router.push(`${process.env.NEXT_PUBLIC_HOST}/search?query=${query}`);
   };
 
+  const handleSubmit = (e)=> {
+    e.preventDefault();
+  }
+
   useEffect(() => {
     Object.keys(cart).length !== 0 && setSidebar(true);
     let exempted = ["/checkout", "/order", "/orders"];
@@ -98,7 +102,7 @@ export default function Navbar({
                     />
                   </Link>
                 </div>
-
+                  <form onSubmit={handleSubmit}>
                 <div className="mx-10 hidden sm:block w-96 ">
                     <label
                       htmlFor="default-search"
@@ -141,6 +145,7 @@ export default function Navbar({
                       </button>
                     </div>
                 </div>
+                </form>
 
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4 py-2">
