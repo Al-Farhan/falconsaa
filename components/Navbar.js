@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { useSearch } from "../context/Context";
+import { useSearch, useCartIsOpen } from "../context/Context";
 
 const navigation = [
   { name: "Medical", href: "/medical", current: false },
@@ -32,11 +32,13 @@ export default function Navbar({
   subTotal,
   logout,
 }) {
-  const { query, updateSearchQuery, setQueryProducts, queryProducts } = useSearch();
+  const { query, setQuery, updateSearchQuery, setQueryProducts, queryProducts } = useSearch();
 
   const [sidebar, setSidebar] = useState(false);
 
-  const [openCart, setOpenCart] = useState(false);
+  // const [openCart, setOpenCart] = useState(false);
+  const {openCart, isCartToggle} = useCartIsOpen();
+
   const router = useRouter();
 
   const handleSearch = async () => {
@@ -45,6 +47,7 @@ export default function Navbar({
     );
     const data = await response.json();
     setQueryProducts(data);
+    setQuery('');
     router.push(`${process.env.NEXT_PUBLIC_HOST}/search?query=${query}`);
   };
 
@@ -56,16 +59,12 @@ export default function Navbar({
     Object.keys(cart).length !== 0 && setSidebar(true);
     let exempted = ["/checkout", "/order", "/orders"];
     if (exempted.includes(router.pathname)) {
-      setOpenCart(false);
+      isCartToggle(false);
     }
   }, [openCart]);
 
   const toggleCart = () => {
     setSidebar(!sidebar);
-    setOpenCart((prev) => {
-      if (prev) return !prev;
-      else return !prev;
-    });
   };
 
   const ref = useRef();
@@ -166,7 +165,7 @@ export default function Navbar({
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <button
-                  onClick={toggleCart}
+                  onClick={isCartToggle}
                   type="button"
                   className="relative rounded-full  p-1 focus:outline-none focus:ring-2focus:ring-offset-2 "
                 >

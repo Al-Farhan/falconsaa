@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import Collections from '../../components/Collections'
+import MyCarousel from '../../components/Carousel'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,7 +18,9 @@ export default function Home() {
       </Head>
       
       <div>
-        <img className='' src="/heroImage.jpg" alt="" />
+        <div>
+          <MyCarousel />
+        </div>
 
         <Collections />
       </div>

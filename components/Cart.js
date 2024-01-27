@@ -4,6 +4,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { FaPlusCircle, FaMinusCircle } from "react-icons/fa";
 import { IoBagCheck  } from "react-icons/io5";
 import Link from "next/link";
+import { useCartIsOpen } from "../context/Context";
 
 export default function Cart({
   toggleOpen,
@@ -13,13 +14,14 @@ export default function Cart({
   subTotal,
   addToCart,
 }) {
-  const [open, setOpen] = useState(toggleOpen);
 
-  console.log("cart on cart page", cart)
+
+  const [open, setOpen] = useState(toggleOpen);
+  const {openCart, isCartToggle} = useCartIsOpen();
 
   return (
-    <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10 sticky" onClose={setOpen}>
+    <Transition.Root show={openCart} as={Fragment}>
+      <Dialog as="div" className="z-10 relative" onClose={isCartToggle}>
         <Transition.Child
           as={Fragment}
           enter="ease-in-out duration-500"
@@ -55,7 +57,7 @@ export default function Cart({
                           <button
                             type="button"
                             className="relative -m-2 p-2 text-gray-400 hover:text-gray-500"
-                            onClick={() => setOpen(false)}
+                            onClick={() => isCartToggle()}
                           >
                             <span className="absolute -inset-0.5" />
                             <span className="sr-only">Close panel</span>
@@ -184,7 +186,7 @@ export default function Cart({
                           <button
                             type="button"
                             className="font-medium text-pink-500 hover:text-indigo-500"
-                            onClick={() => setOpen(false)}
+                            onClick={() => isCartToggle()}
                           >
                             Continue Shopping
                             <span aria-hidden="true"> &rarr;</span>

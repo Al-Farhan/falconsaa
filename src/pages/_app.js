@@ -9,7 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingBar from 'react-top-loading-bar'
 
-import { SearchProvider } from '../../context/Context'
+import { SearchProvider, CartOpenProvider } from '../../context/Context'
 
 export default function App({ Component, pageProps }) {
 
@@ -140,7 +140,7 @@ export default function App({ Component, pageProps }) {
         waitingTime={400}
         onLoaderFinished={() => setProgress(0)}
       />
-    <SearchProvider>{key &&  <Navbar user={user} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} logout={logout} />}
+    <SearchProvider>{key &&  <CartOpenProvider> <Navbar user={user} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} logout={logout} /> </CartOpenProvider>}
     {/* <NavbarPrev /> */}
     <Component cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} buyNow={buyNow} {...pageProps} /></SearchProvider>
     <Footer cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} />
